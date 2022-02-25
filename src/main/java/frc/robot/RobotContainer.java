@@ -7,11 +7,15 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -28,6 +32,11 @@ public class RobotContainer {
   // IO Devices
   public static AHRS navx;
   public static Joystick joyD, joyC;
+  public static NetworkTable table = NetworkTableInstance.getDefault().getTable(VisionConstants.limelight);
+  public static NetworkTableEntry tv = table.getEntry(VisionConstants.tv);
+  public static NetworkTableEntry tx = table.getEntry(VisionConstants.tx);
+  public static NetworkTableEntry ty = table.getEntry(VisionConstants.ty);
+  public static NetworkTableEntry ta = table.getEntry(VisionConstants.ta);
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem;

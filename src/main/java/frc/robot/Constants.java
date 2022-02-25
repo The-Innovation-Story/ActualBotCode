@@ -54,4 +54,15 @@ public final class Constants {
 
         public static final int intake_ID = 29;
     }
+
+    public final static class VisionConstants {
+
+        public static final String limelight = null;
+        public static final String tv = null;
+        public static final String tx = null;
+        public static final String ty = null;
+        public static final String ta = null;
+
+
+    }
 }
