@@ -5,23 +5,23 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.Constants.OIConstants;
-
-public class FeederCommand extends CommandBase {
-  private FeederSubsystem feederSubsystem;
-  /** Creates a new FeederCommand. */
-  public FeederCommand(FeederSubsystem feederSubsystem) {
-    this.feederSubsystem = feederSubsystem;
+public class IntakeStoppingCommand extends CommandBase {
+  private IntakeSubsystem intakeSubsystem;
+  /** Creates a new IntakeStoppingCommand. */
+  public IntakeStoppingCommand(IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.feederSubsystem);
+    addRequirements(this.intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.intakeSubsystem.setIntakeSpeed(IntakeConstants.stopSpeed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -29,13 +29,11 @@ public class FeederCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    this.feederSubsystem.setFeederSpeed();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.joyD.getRawButton(OIConstants.feeder_X_ButtonNumber);
+    return false;
   }
 }

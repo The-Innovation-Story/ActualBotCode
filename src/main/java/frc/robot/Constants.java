@@ -40,20 +40,24 @@ public final class Constants {
         public static final double rpm_to_ms_wheel_converter = (Math.PI / 30) * Units.inchesToMeters(3);
         public static final double kRiseLimiter = 0;
     }
-    
+
     public final static class OIConstants {
-        
+
         public static final int kDriverJoystickPort = 0;
         public static final int kClimberJoystickPort = 1;
         public static final int kJoyDTurnAxis = 4;
         public static final int kJoyDSpeedAxis = 1;
-        
+        public static final int feeder_X_ButtonNumber = 1;
+        public static final double feederDebouncePeriod = 0.5;
+        public static final int intakeForward_Y_ButtonNumber = 0;
+
     }
-    
+
     public final static class IntakeConstants {
-        
+
         public static final int intake_ID = 29;
         public static final double deadband = 0.05;
+        public static final double stopSpeed = 0;
     }
 
     public final static class VisionConstants {
@@ -64,18 +68,17 @@ public final class Constants {
         public static final String ty = "ty";
         public static final String ta = "ta";
 
-
     }
 
     public final static class FeederConstants {
-        
+
         public static final int feeder_ID = 25;
         public static final double deadband = 0.05;
         public static final double feederSpeed = 0.35;
     }
 
     public final static class ShooterConstants {
-        
+
         public static final int shooter_ID = 25;
         public static final double deadband = 0.05;
         public static final double shooterSpeed = 0.35;

@@ -13,11 +13,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.teleop.DriveCommand;
+import frc.robot.commands.teleop.FeederCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,6 +45,9 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
+  private final FeederSubsystem feederSubsystem;
+  private final ShooterSubsystem shooterSubsystem;
   private final SlewRateLimiter speedLimit, turnLimit;
 
   /**
@@ -47,6 +55,9 @@ public class RobotContainer {
    */
   public RobotContainer() {
     this.driveSubsystem = new DriveSubsystem();
+    this.intakeSubsystem = new IntakeSubsystem();
+    this.feederSubsystem = new FeederSubsystem();
+    this.shooterSubsystem = new ShooterSubsystem();
 
     this.speedLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
     this.turnLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
@@ -72,6 +83,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Feeder Button Integration
+    new JoystickButton(RobotContainer.joyD, OIConstants.feeder_X_ButtonNumber)
+        .debounce(OIConstants.feederDebouncePeriod).whenActive(new FeederCommand(this.feederSubsystem));
+
+    // Intake Forward Button Integration
+    new JoystickButton(RobotContainer.joyD, OIConstants.intakeForward_Y_ButtonNumber)
+        .debounce(OIConstants.feederDebouncePeriod).whenActive(new FeederCommand(this.feederSubsystem));
   }
 
   /**
