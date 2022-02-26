@@ -40,29 +40,37 @@ public final class Constants {
         public static final double rpm_to_ms_wheel_converter = (Math.PI / 30) * Units.inchesToMeters(3);
         public static final double kRiseLimiter = 0;
     }
-
+    
     public final static class OIConstants {
-
+        
         public static final int kDriverJoystickPort = 0;
         public static final int kClimberJoystickPort = 1;
         public static final int kJoyDTurnAxis = 4;
         public static final int kJoyDSpeedAxis = 1;
-
+        
     }
-
+    
     public final static class IntakeConstants {
-
+        
         public static final int intake_ID = 29;
+        public static final double deadband = 0.05;
     }
 
     public final static class VisionConstants {
 
-        public static final String limelight = null;
-        public static final String tv = null;
-        public static final String tx = null;
-        public static final String ty = null;
-        public static final String ta = null;
+        public static final String limelight = "limelight";
+        public static final String tv = "tv";
+        public static final String tx = "tx";
+        public static final String ty = "ty";
+        public static final String ta = "ta";
 
 
+    }
+
+    public final static class FeederConstants {
+        
+        public static final int feeder_ID = 25;
+        public static final double deadband = 0.05;
+        public static final int feederSpeed = 0;
     }
 }
