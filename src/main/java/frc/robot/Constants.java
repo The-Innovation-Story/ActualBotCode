@@ -71,6 +71,23 @@ public final class Constants {
         
         public static final int feeder_ID = 25;
         public static final double deadband = 0.05;
-        public static final int feederSpeed = 0;
+        public static final double feederSpeed = 0.35;
+    }
+
+    public final static class ShooterConstants {
+        
+        public static final int shooter_ID = 25;
+        public static final double deadband = 0.05;
+        public static final double shooterSpeed = 0.35;
+        public static final int neoCountsPerRevolution = 0;
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kIz = 0;
+        public static final double kMinOutput = 0;
+        public static final double kFF = 0;
+        public static final double kMaxOutput = 0;
+        public static final double deadbandVelocity = 0;
+        public static final double setThisVelocity = 0;
     }
 }

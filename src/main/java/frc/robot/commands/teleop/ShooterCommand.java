@@ -5,11 +5,15 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends CommandBase {
+  private ShooterSubsystem shooterSubsystem;
   /** Creates a new ShooterCommand. */
-  public ShooterCommand() {
+  public ShooterCommand(ShooterSubsystem shooterSubsystem) {
+    this.shooterSubsystem = shooterSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.

@@ -5,11 +5,15 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.FeederSubsystem;
 
 public class FeederCommand extends CommandBase {
+  private FeederSubsystem feederSubsystem;
   /** Creates a new FeederCommand. */
-  public FeederCommand() {
+  public FeederCommand(FeederSubsystem feederSubsystem) {
+    this.feederSubsystem = feederSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.feederSubsystem);
   }
 
   // Called when the command is initially scheduled.
