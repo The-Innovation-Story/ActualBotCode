@@ -17,8 +17,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.commands.auto.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.commands.teleop.FeederCommand;
+import frc.robot.commands.teleop.IntakeCommand;
+import frc.robot.commands.teleop.IntakeStoppingCommand;
+import frc.robot.commands.teleop.ShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -36,12 +40,9 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
   // IO Devices
   public static AHRS navx;
-  public static Joystick joyD, joyC;
-  public static NetworkTable table = NetworkTableInstance.getDefault().getTable(VisionConstants.limelight);
-  public static NetworkTableEntry tv = table.getEntry(VisionConstants.tv);
-  public static NetworkTableEntry tx = table.getEntry(VisionConstants.tx);
-  public static NetworkTableEntry ty = table.getEntry(VisionConstants.ty);
-  public static NetworkTableEntry ta = table.getEntry(VisionConstants.ta);
+  public static Joystick joyC, joyD;
+  public static NetworkTable table;
+  public static NetworkTableEntry tv, tx, ty, ta;
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem;
@@ -65,13 +66,22 @@ public class RobotContainer {
     RobotContainer.navx = new AHRS(SPI.Port.kMXP);
     RobotContainer.joyD = new Joystick(OIConstants.kDriverJoystickPort);
     RobotContainer.joyC = new Joystick(OIConstants.kClimberJoystickPort);
+    RobotContainer.table = NetworkTableInstance.getDefault().getTable(VisionConstants.limelight);
+    RobotContainer.tv = RobotContainer.table.getEntry(VisionConstants.tv);
+    RobotContainer.tx = RobotContainer.table.getEntry(VisionConstants.tx);
+    RobotContainer.ty = RobotContainer.table.getEntry(VisionConstants.ty);
+    RobotContainer.ta = RobotContainer.table.getEntry(VisionConstants.ta);
     // Configure the button bindings
     configureButtonBindings();
 
     // Set Default commands
+    // Drive
     this.driveSubsystem.setDefaultCommand(
         new DriveCommand(this.driveSubsystem, () -> -1 * RobotContainer.joyD.getRawAxis(OIConstants.kJoyDSpeedAxis),
             () -> RobotContainer.joyD.getRawAxis(OIConstants.kJoyDTurnAxis), this.speedLimit, this.turnLimit));
+
+    // Intake
+    this.intakeSubsystem.setDefaultCommand(new IntakeStoppingCommand(this.intakeSubsystem));
   }
 
   /**
@@ -89,7 +99,11 @@ public class RobotContainer {
 
     // Intake Forward Button Integration
     new JoystickButton(RobotContainer.joyD, OIConstants.intakeForward_Y_ButtonNumber)
-        .debounce(OIConstants.feederDebouncePeriod).whenActive(new FeederCommand(this.feederSubsystem));
+        .debounce(OIConstants.feederDebouncePeriod).toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
+
+    // Shooter Button Binding Integration
+    new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
+        .debounce(OIConstants.feederDebouncePeriod).whenActive(new ShooterCommand(this.shooterSubsystem));
   }
 
   /**
@@ -99,6 +113,26 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new AutonomousDriveRoutineGroupCommand(this.driveSubsystem);
+  }
+
+  public static boolean getTarget() {
+    RobotContainer.tv = RobotContainer.table.getEntry(VisionConstants.tv);
+    return tv.getBoolean(false);
+  }
+
+  public double getDistanceToGoal() {
+    RobotContainer.ty = RobotContainer.table.getEntry(VisionConstants.ty);
+    return ty.getDouble(VisionConstants.defaultValue);
+  }
+
+  public static double getDistanceGyroSeparationFromGoal() {
+    RobotContainer.tx = RobotContainer.table.getEntry(VisionConstants.tx);
+    return tx.getDouble(VisionConstants.defaultValue);
+  }
+  
+  public double getAreaOfGoal() {
+    RobotContainer.ta = RobotContainer.table.getEntry(VisionConstants.ta);
+    return ta.getDouble(VisionConstants.defaultAreaValue);
   }
 }
