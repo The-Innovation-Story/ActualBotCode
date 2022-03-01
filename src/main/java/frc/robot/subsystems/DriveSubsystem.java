@@ -12,35 +12,25 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final CANSparkMax FR;
-  private final CANSparkMax BR;
+  private CANSparkMax FR;
+  private CANSparkMax BR;
   public RelativeEncoder FR_encoder;
   public RelativeEncoder BR_encoder;
-  private final MotorControllerGroup rightSide;
-  private final PIDController rightPIDController;
+  private MotorControllerGroup rightSide;
 
-  private final CANSparkMax FL;
-  private final CANSparkMax BL;
+  private CANSparkMax FL;
+  private CANSparkMax BL;
   public RelativeEncoder FL_encoder;
   public RelativeEncoder BL_encoder;
-  private final MotorControllerGroup leftSide;
-  private final PIDController leftPIDController;
+  private MotorControllerGroup leftSide;
 
-  private final DifferentialDrive driveTrain;
-  private final DifferentialDriveKinematics driveKinematics;
-  private final DifferentialDriveOdometry driveOdometry;
-  private final SimpleMotorFeedforward driveFeedforward;
+  private DifferentialDrive driveTrain;
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -52,7 +42,6 @@ public class DriveSubsystem extends SubsystemBase {
         DrivingConstants.neoCountsPerRevolution);
     this.rightSide = new MotorControllerGroup(this.FR, this.BR);
     this.rightSide.setInverted(true);
-    this.rightPIDController = new PIDController(DrivingConstants.kP, DrivingConstants.kI, DrivingConstants.kD);
 
     this.FL = new CANSparkMax(DrivingConstants.FL_ID, MotorType.kBrushless);
     this.BL = new CANSparkMax(DrivingConstants.BL_ID, MotorType.kBrushless);
@@ -61,29 +50,15 @@ public class DriveSubsystem extends SubsystemBase {
     this.BL_encoder = this.BL.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,
         DrivingConstants.neoCountsPerRevolution);
     this.leftSide = new MotorControllerGroup(this.FL, this.BL);
-    this.rightSide.setInverted(false);
-    this.leftPIDController = new PIDController(DrivingConstants.kP, DrivingConstants.kI, DrivingConstants.kD);
+    this.leftSide.setInverted(false);
 
     this.driveTrain = new DifferentialDrive(this.leftSide, this.rightSide);
-    this.driveTrain.setSafetyEnabled(true);
-    this.driveKinematics = new DifferentialDriveKinematics(DrivingConstants.kTrackWidth);
-    this.driveOdometry = new DifferentialDriveOdometry(RobotContainer.navx.getRotation2d());
-    this.driveFeedforward = new SimpleMotorFeedforward(DrivingConstants.kS, DrivingConstants.kV, DrivingConstants.kA);
+    this.driveTrain.setSafetyEnabled(false);
 
     this.FR_encoder.setPosition(0.0);
     this.BR_encoder.setPosition(0.0);
     this.FL_encoder.setPosition(0.0);
     this.BL_encoder.setPosition(0.0);
-
-    this.FR_encoder.setPositionConversionFactor(
-        2 * Math.PI * DrivingConstants.kWheelRadius / DrivingConstants.neoCountsPerRevolution);
-    this.BR_encoder.setPositionConversionFactor(
-        2 * Math.PI * DrivingConstants.kWheelRadius / DrivingConstants.neoCountsPerRevolution);
-    this.FL_encoder.setPositionConversionFactor(
-        2 * Math.PI * DrivingConstants.kWheelRadius / DrivingConstants.neoCountsPerRevolution);
-    this.BL_encoder.setPositionConversionFactor(
-        2 * Math.PI * DrivingConstants.kWheelRadius / DrivingConstants.neoCountsPerRevolution);
-
   }
 
   @Override
@@ -91,34 +66,45 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
-    final double leftFeedforward = this.driveFeedforward.calculate(speeds.leftMetersPerSecond);
-    final double rightFeedforward = this.driveFeedforward.calculate(speeds.rightMetersPerSecond);
+  public void drive(final double l, final double r) {
+    this.rightSide.setInverted(true);
 
-    final double leftOutput = this.leftPIDController.calculate(
-        this.FL_encoder.getVelocity() * DrivingConstants.rpm_to_ms_wheel_converter, speeds.leftMetersPerSecond);
-    final double rightOutput = this.rightPIDController.calculate(
-        this.FR_encoder.getVelocity() * DrivingConstants.rpm_to_ms_wheel_converter, speeds.rightMetersPerSecond);
-    this.leftSide.setVoltage(leftOutput + leftFeedforward);
-    this.rightSide.setVoltage(rightOutput + rightFeedforward);
+    this.FR.set(r);
+    this.BR.set(r);
+    this.FL.set(l);
+    this.BL.set(l);
   }
 
-  /**
-   * Drives the robot with the given linear velocity and angular velocity.
-   *
-   * @param xSpeed Linear velocity in m/s.
-   * @param rot    Angular velocity in rad/s.
-   */
-  @SuppressWarnings("ParameterName")
-  public void drive(double xSpeed, double rot) {
-    DifferentialDriveWheelSpeeds wheelSpeeds = this.driveKinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
-    setSpeeds(wheelSpeeds);
-    updateOdometry();
+  public void arcadeInbuilt(final double y, final double z) {
+    // System.out.println("Speed: " + y + " " + z);
+    this.rightSide.setInverted(false);
+
+    this.driveTrain.arcadeDrive(y * DrivingConstants.kMaxSpeed, z * DrivingConstants.kMaxAngularSpeed);
   }
 
-  /** Updates the field-relative position. */
-  public void updateOdometry() {
-    this.driveOdometry.update(
-        RobotContainer.navx.getRotation2d(), this.FL_encoder.getPosition(), this.FR_encoder.getPosition());
+  public double getEncoderDistance() {
+    double distance = (FL_encoder.getPosition() + FR_encoder.getPosition() + BL_encoder.getPosition()
+        + BR_encoder.getPosition()) / 4;
+    return (distance * Math.PI * Units.inchesToMeters(6)) / 7.31;
   }
+
+  public double getHeading() {
+    return RobotContainer.navx.getYaw();
+  }
+
+  public void arcadeAutonomousInbuilt(double speed, double turn) {
+    this.rightSide.setInverted(false);
+
+    this.driveTrain.arcadeDrive(speed, turn);
+  }
+
+  public void setBasePosition() {
+    this.FR_encoder.setPosition(0.0);
+    this.BR_encoder.setPosition(0.0);
+    this.FL_encoder.setPosition(0.0);
+    this.BL_encoder.setPosition(0.0);
+
+    RobotContainer.navx.reset();
+  }
+
 }

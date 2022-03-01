@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.DrivingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -33,8 +32,8 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = this.speedLimit.calculate(this.speed.get() * DrivingConstants.kMaxSpeed);
-    double turn = this.turnLimit.calculate(this.turn.get() * DrivingConstants.kMaxAngularSpeed);
+    double speed = this.speedLimit.calculate(this.speed.get());
+    double turn = this.turnLimit.calculate(this.turn.get());
 
     this.driveSubsystem.drive(speed, turn);
   }
