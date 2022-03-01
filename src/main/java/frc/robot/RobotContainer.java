@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.auto.AutonomousDriveRoutineGroupCommand;
+import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.commands.teleop.FeederCommand;
 import frc.robot.commands.teleop.IntakeCommand;
