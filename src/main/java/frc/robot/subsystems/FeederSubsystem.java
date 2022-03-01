@@ -25,6 +25,10 @@ public class FeederSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void stopFeeder() {
+    this.feeder.set(0.0);
+  }
+
   public void setFeederSpeed() {
     double speedmotor = this.feeder.get();
     if (Math.abs(speedmotor) < FeederConstants.deadband) {
