@@ -5,6 +5,9 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
@@ -20,6 +23,7 @@ public class IntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.intakeSubsystem.setIntakeSpeed(IntakeConstants.flowSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,11 +34,12 @@ public class IntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.intakeSubsystem.setIntakeSpeed(IntakeConstants.stopSpeed);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !RobotContainer.joyD.getRawButton(OIConstants.intakeForward_Y_ButtonNumber);
   }
 }

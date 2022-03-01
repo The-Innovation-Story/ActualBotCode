@@ -22,23 +22,31 @@ public final class Constants {
     public final static class DrivingConstants {
 
         public static final int neoCountsPerRevolution = 42;
-        public static final int FL_ID = 11;
-        public static final int BL_ID = 12;
-        public static final int FR_ID = 21;
-        public static final int BR_ID = 22;
+        public static final int FL_ID = 22;
+        public static final int BL_ID = 21;
+        public static final int FR_ID = 12;
+        public static final int BR_ID = 11;
         public static final double kWheelRadius = Units.inchesToMeters(6);
-        public static final double kMaxSpeed = 3.0; // meters per second
-        public static final double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
+        public static final double kMaxSpeed = 0.5; // multiplier for distance movement
+        public static final double kMaxAngularSpeed = 0.5; // multiplier for angular movement
 
         public static final double kTrackWidth = 0.657; // meters
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kA = 0;
-        public static final double kV = 0;
-        public static final double kS = 0;
+        public static final double kPTurn = 0;
+        public static final double kITurn = 0;
+        public static final double kDTurn = 0;
         public static final double rpm_to_ms_wheel_converter = (Math.PI / 30) * Units.inchesToMeters(3);
         public static final double kRiseLimiter = 0;
+        public static final double kMaxVelocity = 0;
+        public static final double kMaxAcceleration = 0;
+        public static final double kMaxVelocityTurning = 0;
+        public static final double kMaxAccelerationTurning = 0;
+        public static final double kMinimumAutonomousDriveSpeed = -0.5;
+        public static final double kMaximumAutonomousDriveSpeed = 0.5;
+        public static final double kMinimumAutonomousTurnSpeed = -0.5;
+        public static final double kMaximumAutonomousTurnSpeed = 0.5;
     }
 
     public final static class OIConstants {
@@ -49,7 +57,8 @@ public final class Constants {
         public static final int kJoyDSpeedAxis = 1;
         public static final int feeder_X_ButtonNumber = 1;
         public static final double feederDebouncePeriod = 0.5;
-        public static final int intakeForward_Y_ButtonNumber = 0;
+        public static final int intakeForward_Y_ButtonNumber = 3;
+        public static final int shooter_RB_ButtonNumber = 5;
 
     }
 
@@ -58,6 +67,7 @@ public final class Constants {
         public static final int intake_ID = 29;
         public static final double deadband = 0.05;
         public static final double stopSpeed = 0;
+        public static final double flowSpeed = 0.5;
     }
 
     public final static class VisionConstants {
@@ -67,6 +77,8 @@ public final class Constants {
         public static final String tx = "tx";
         public static final String ty = "ty";
         public static final String ta = "ta";
+        public static final double defaultValue = 0;
+        public static final double defaultAreaValue = 0;
 
     }
 
@@ -79,10 +91,10 @@ public final class Constants {
 
     public final static class ShooterConstants {
 
-        public static final int shooter_ID = 25;
+        public static final int shooter_ID = 1;
         public static final double deadband = 0.05;
         public static final double shooterSpeed = 0.35;
-        public static final int neoCountsPerRevolution = 0;
+        public static final int neoCountsPerRevolution = 42;
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
@@ -91,6 +103,6 @@ public final class Constants {
         public static final double kFF = 0;
         public static final double kMaxOutput = 0;
         public static final double deadbandVelocity = 0;
-        public static final double setThisVelocity = 0;
+        public static double setThisVelocity = 3000;
     }
 }
