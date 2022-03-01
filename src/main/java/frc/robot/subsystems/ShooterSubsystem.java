@@ -50,7 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
     this.shooter.set(0);
   }
 
-  public void setSpeed(double speed) {
+  public void setSpeed() {
     double speedmotor = shootEncoder.getVelocity();
     if (Math.abs(speedmotor) < ShooterConstants.deadbandVelocity) {
       this.shootPIDController.setReference(ShooterConstants.setThisVelocity, CANSparkMax.ControlType.kVelocity);
