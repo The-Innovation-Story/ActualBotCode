@@ -12,10 +12,10 @@ import frc.robot.subsystems.DriveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousDriveRoutineGroupCommand extends SequentialCommandGroup {
   public double INITIAL_DISTANCE = 2;
-  public double DUPLET_DISTANCE = -3;
-  public double DUPLET_ANGLE = -30;
-  public double TRIPLET_DISTANCE = 3;
-  public double TRIPLET_ANGLE = 30;
+  public double DUPLET_DISTANCE = -1;
+  public double DUPLET_ANGLE = -10;
+  public double TRIPLET_DISTANCE = 1;
+  public double TRIPLET_ANGLE = 10;
 
   /** Creates a new AutonomousDriveRoutineGroupCommand. */
   public AutonomousDriveRoutineGroupCommand(DriveSubsystem driveSubsystem) {
