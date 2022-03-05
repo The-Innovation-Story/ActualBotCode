@@ -17,12 +17,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
-import frc.robot.commands.teleop.DriveCommand;
-import frc.robot.commands.teleop.FeederCommand;
-import frc.robot.commands.teleop.IntakeCommand;
-import frc.robot.commands.teleop.IntakeStoppingCommand;
-import frc.robot.commands.teleop.ShooterCommand;
+// import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
+import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
+import frc.robot.commands.teleop.drive.DriveCommand;
+import frc.robot.commands.teleop.feeder.FeederCommand;
+import frc.robot.commands.teleop.intake.IntakeCommand;
+import frc.robot.commands.teleop.intake.IntakeStoppingCommand;
+import frc.robot.commands.teleop.shooter.ShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -104,6 +105,10 @@ public class RobotContainer {
     // Shooter Button Binding Integration
     new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
         .debounce(OIConstants.feederDebouncePeriod).whenActive(new ShooterCommand(this.shooterSubsystem));
+
+    // Turn An Angle
+    new JoystickButton(RobotContainer.joyD, OIConstants.turn_LB_ButtonNumber)
+        .debounce(OIConstants.feederDebouncePeriod).whenActive(new ShooterCommand(this.shooterSubsystem));
   }
 
   /**
@@ -113,7 +118,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousDriveRoutineGroupCommand(this.driveSubsystem);
+    // return new AutonomousDriveRoutineGroupCommand(this.driveSubsystem);
+    return new AutonomousTurnByAngleCommand(this.driveSubsystem, 100);
   }
 
   public static boolean getTarget() {

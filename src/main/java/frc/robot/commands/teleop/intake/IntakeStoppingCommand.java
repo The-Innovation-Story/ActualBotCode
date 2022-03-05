@@ -2,25 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.teleop;
+package frc.robot.commands.teleop.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ShooterCommand extends CommandBase {
-  private ShooterSubsystem shooterSubsystem;
-  /** Creates a new ShooterCommand. */
-  public ShooterCommand(ShooterSubsystem shooterSubsystem) {
-    this.shooterSubsystem = shooterSubsystem;
+public class IntakeStoppingCommand extends CommandBase {
+  private IntakeSubsystem intakeSubsystem;
+  /** Creates a new IntakeStoppingCommand. */
+  public IntakeStoppingCommand(IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.shooterSubsystem);
+    addRequirements(this.intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.intakeSubsystem.setIntakeSpeed(IntakeConstants.stopSpeed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -28,13 +29,11 @@ public class ShooterCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    this.shooterSubsystem.setSpeed();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.joyD.getRawButton(OIConstants.shooter_RB_ButtonNumber);
+    return false;
   }
 }

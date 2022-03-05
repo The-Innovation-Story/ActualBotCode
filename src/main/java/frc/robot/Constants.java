@@ -59,12 +59,13 @@ public final class Constants {
         public static final double feederDebouncePeriod = 0.5;
         public static final int intakeForward_Y_ButtonNumber = 3;
         public static final int shooter_RB_ButtonNumber = 5;
+        public static final int turn_LB_ButtonNumber = 6;
 
     }
 
     public final static class IntakeConstants {
 
-        public static final int intake_ID = 29;
+        public static final int intake_ID = 2;
         public static final double deadband = 0.05;
         public static final double stopSpeed = 0;
         public static final double flowSpeed = 0.5;
@@ -79,19 +80,26 @@ public final class Constants {
         public static final String ta = "ta";
         public static final double defaultValue = 0;
         public static final double defaultAreaValue = 0;
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kMaxVelocityTurning = 0.5;
+        public static final double kMaxAccelerationTurning = 0.5;
+        public static final double minTurnSpeed = -0.3;
+        public static final double maxTurnSpeed = 0.3;
 
     }
 
     public final static class FeederConstants {
 
-        public static final int feeder_ID = 25;
+        public static final int feeder_ID = 1;
         public static final double deadband = 0.05;
         public static final double feederSpeed = 0.35;
     }
 
     public final static class ShooterConstants {
 
-        public static final int shooter_ID = 1;
+        public static final int shooter_ID = 5;
         public static final double deadband = 0.05;
         public static final double shooterSpeed = 0.35;
         public static final int neoCountsPerRevolution = 42;
@@ -104,5 +112,13 @@ public final class Constants {
         public static final double kMaxOutput = 1;
         public static final double deadbandVelocity = 1500;
         public static double setThisVelocity = 3000;
+    }
+
+    public final static class ClimberConstants {
+
+        public static final int falcon_ID = 6;
+        public static final double falconSpeed = 0.5;
+        public static final double deadband = 0;
+
     }
 }

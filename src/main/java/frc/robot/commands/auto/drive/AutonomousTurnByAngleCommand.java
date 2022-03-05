@@ -37,7 +37,10 @@ public class AutonomousTurnByAngleCommand extends CommandBase {
     // this.driveSubsystem.arcadeInbuilt(0.0,
     // (Math.signum(this.angle) * (Math.abs(Math.abs(this.angle) -
     // Math.abs(RobotContainer.navx.getYaw())))) * 0.003);
-    this.driveSubsystem.drive(Math.signum(this.angle) * Math.abs(Math.abs(this.angle) - Math.abs(RobotContainer.navx.getYaw())) * 0.003, -1 * (Math.signum(this.angle) * (Math.abs(Math.abs(this.angle) - Math.abs(RobotContainer.navx.getYaw())))) * 0.003);
+    this.driveSubsystem.drive(
+        Math.signum(this.angle) * Math.abs(Math.abs(this.angle) - Math.abs(RobotContainer.navx.getYaw())) * 0.006,
+        -1 * (Math.signum(this.angle) * (Math.abs(Math.abs(this.angle) - Math.abs(RobotContainer.navx.getYaw()))))
+            * 0.006);
 
   }
 

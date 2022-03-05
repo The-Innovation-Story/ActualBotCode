@@ -2,21 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.teleop;
+package frc.robot.commands.teleop.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class FeederCommand extends CommandBase {
-  private FeederSubsystem feederSubsystem;
-  /** Creates a new FeederCommand. */
-  public FeederCommand(FeederSubsystem feederSubsystem) {
-    this.feederSubsystem = feederSubsystem;
+public class ShooterCommand extends CommandBase {
+  private ShooterSubsystem shooterSubsystem;
+  /** Creates a new ShooterCommand. */
+  public ShooterCommand(ShooterSubsystem shooterSubsystem) {
+    this.shooterSubsystem = shooterSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.feederSubsystem);
+    addRequirements(this.shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,12 +29,12 @@ public class FeederCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.feederSubsystem.setFeederSpeed();
+    this.shooterSubsystem.setSpeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.joyD.getRawButton(OIConstants.feeder_X_ButtonNumber);
+    return !RobotContainer.joyD.getRawButton(OIConstants.shooter_RB_ButtonNumber);
   }
 }

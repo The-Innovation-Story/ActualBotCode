@@ -17,7 +17,7 @@ public class FeederSubsystem extends SubsystemBase {
 
   /** Creates a new FeederSubsystem. */
   public FeederSubsystem() {
-    this.feeder = new CANSparkMax(FeederConstants.feeder_ID, MotorType.kBrushless);
+    this.feeder = new CANSparkMax(FeederConstants.feeder_ID, MotorType.kBrushed);
   }
 
   @Override

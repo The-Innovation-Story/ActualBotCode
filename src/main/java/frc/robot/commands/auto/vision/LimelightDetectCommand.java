@@ -5,28 +5,39 @@
 package frc.robot.commands.auto.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class LimelightDetectCommand extends CommandBase {
+  private DriveSubsystem driveSubsystem;
+
   /** Creates a new LimelightDetectCommand. */
-  public LimelightDetectCommand() {
+  public LimelightDetectCommand(DriveSubsystem driveSubsystem) {
+    this.driveSubsystem = driveSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(this.driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    this.driveSubsystem.drive(0.07, -0.07);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    this.driveSubsystem.drive(0.0, -0.0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return RobotContainer.getTarget();
   }
 }
