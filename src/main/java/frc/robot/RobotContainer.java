@@ -40,7 +40,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
   // IO Devices
   public static AHRS navx;
-  public static Joystick joyC, joyD;
+  public static Joystick joyD;
   public static NetworkTable table;
   public static NetworkTableEntry tv, tx, ty, ta;
 
@@ -65,7 +65,7 @@ public class RobotContainer {
 
     RobotContainer.navx = new AHRS(SPI.Port.kMXP);
     RobotContainer.joyD = new Joystick(OIConstants.kDriverJoystickPort);
-    RobotContainer.joyC = new Joystick(OIConstants.kClimberJoystickPort);
+    // RobotContainer.joyC = new Joystick(OIConstants.kClimberJoystickPort);
     RobotContainer.table = NetworkTableInstance.getDefault().getTable(VisionConstants.limelight);
     RobotContainer.tv = RobotContainer.table.getEntry(VisionConstants.tv);
     RobotContainer.tx = RobotContainer.table.getEntry(VisionConstants.tx);

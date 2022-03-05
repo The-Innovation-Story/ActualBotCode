@@ -30,7 +30,7 @@ public final class Constants {
         public static final double kMaxSpeed = 0.5; // multiplier for distance movement
         public static final double kMaxAngularSpeed = 0.5; // multiplier for angular movement
 
-        public static final double kTrackWidth = 0.657; // meters
+        public static final double kTrackWidth = 0.61; // meters
         public static final double kP = 0;
         public static final double kI = 0;
         public static final double kD = 0;
@@ -43,10 +43,10 @@ public final class Constants {
         public static final double kMaxAcceleration = 0;
         public static final double kMaxVelocityTurning = 0;
         public static final double kMaxAccelerationTurning = 0;
-        public static final double kMinimumAutonomousDriveSpeed = -0.5;
-        public static final double kMaximumAutonomousDriveSpeed = 0.5;
-        public static final double kMinimumAutonomousTurnSpeed = -0.5;
-        public static final double kMaximumAutonomousTurnSpeed = 0.5;
+        public static final double kMinimumAutonomousDriveSpeed = -0.3;
+        public static final double kMaximumAutonomousDriveSpeed = 0.3;
+        public static final double kMinimumAutonomousTurnSpeed = -0.3;
+        public static final double kMaximumAutonomousTurnSpeed = 0.3;
     }
 
     public final static class OIConstants {
