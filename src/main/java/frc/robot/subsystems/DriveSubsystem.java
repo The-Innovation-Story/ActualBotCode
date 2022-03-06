@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -53,7 +54,7 @@ public class DriveSubsystem extends SubsystemBase {
     this.leftSide.setInverted(false);
 
     this.driveTrain = new DifferentialDrive(this.leftSide, this.rightSide);
-    this.driveTrain.setSafetyEnabled(false);
+    // this.driveTrain.setSafetyEnabled(false);
 
     this.FR_encoder.setPosition(0.0);
     this.BR_encoder.setPosition(0.0);
@@ -95,6 +96,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void arcadeAutonomousInbuilt(double speed, double turn) {
     this.rightSide.setInverted(false);
 
+    SmartDashboard.putNumber("Speed", speed);
+    SmartDashboard.putNumber("Turn", turn);
     this.driveTrain.arcadeDrive(speed, turn);
   }
 

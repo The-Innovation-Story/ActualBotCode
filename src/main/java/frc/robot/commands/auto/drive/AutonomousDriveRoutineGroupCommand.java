@@ -21,9 +21,11 @@ public class AutonomousDriveRoutineGroupCommand extends SequentialCommandGroup {
   public AutonomousDriveRoutineGroupCommand(DriveSubsystem driveSubsystem) {
 
     addCommands(new AutonomousDriveTurnCommand(driveSubsystem, INITIAL_DISTANCE, 0));
-    addCommands(new AutonomousTurnByAngleCommand(driveSubsystem, 179));
-    addCommands(new AutonomousDriveTurnCommand(driveSubsystem, DUPLET_DISTANCE, DUPLET_ANGLE));
-    addCommands(new AutonomousDriveTurnCommand(driveSubsystem, TRIPLET_DISTANCE, TRIPLET_ANGLE));
+    addCommands(new AutonomousTurnByAngleCommand(driveSubsystem, 90));
+    // addCommands(new AutonomousDriveTurnCommand(driveSubsystem, DUPLET_DISTANCE,
+    // DUPLET_ANGLE));
+    // addCommands(new AutonomousDriveTurnCommand(driveSubsystem, TRIPLET_DISTANCE,
+    // TRIPLET_ANGLE));
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
   }

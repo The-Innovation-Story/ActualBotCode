@@ -35,7 +35,7 @@ public class DriveCommand extends CommandBase {
     double speed = this.speedLimit.calculate(this.speed.get());
     double turn = this.turnLimit.calculate(this.turn.get());
 
-    this.driveSubsystem.drive(speed, turn);
+    this.driveSubsystem.arcadeInbuilt(speed, turn);
   }
 
   // Called once the command ends or is interrupted.

@@ -32,8 +32,8 @@ public class AutonomousDriveTurnCommand extends CommandBase {
     // The integral gain term will never add or subtract more than 0.5 from the
     // total loop output
     // Kindly Set This as per our use case (ye safety ke liye rakha hai)
-    this.driveController.setIntegratorRange(-0.5, 0.5);
-    this.turnController.setIntegratorRange(-0.5, 0.5);
+    // this.driveController.setIntegratorRange(-0.5, 0.5);
+    // this.turnController.setIntegratorRange(-0.5, 0.5);
     this.driveController.setGoal(distance);
     this.turnController.setGoal(angle);
     // Use addRequirements() here to declare subsystem dependencies.
