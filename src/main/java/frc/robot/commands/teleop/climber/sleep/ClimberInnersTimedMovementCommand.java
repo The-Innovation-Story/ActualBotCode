@@ -23,6 +23,7 @@ public class ClimberInnersTimedMovementCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("OPENED 2");
     this.now = Timer.getFPGATimestamp();
     this.innerClimberSubsystem.andarWale_Coast();
   }
@@ -38,6 +39,7 @@ public class ClimberInnersTimedMovementCommand extends CommandBase {
   public void end(boolean interrupted) {
     this.innerClimberSubsystem.setInnerSpeed(0.0);
     this.innerClimberSubsystem.andarWale_Break();
+    System.out.println("CLOSED 2");
   }
 
   // Returns true when the command should end.

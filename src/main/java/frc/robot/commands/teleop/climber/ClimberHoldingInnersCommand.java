@@ -36,6 +36,7 @@ public class ClimberHoldingInnersCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("OPENED 1");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,9 +60,10 @@ public class ClimberHoldingInnersCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("CLOSED 1");
     this.pgClimberSubsystem.setPGInnerPIDSpeed(0.0);
     this.pgClimberSubsystem.setInnerPGBasePosition();
-    this.innerHolding.
+    this.innerHolding.close();
   }
 
   // Returns true when the command should end.

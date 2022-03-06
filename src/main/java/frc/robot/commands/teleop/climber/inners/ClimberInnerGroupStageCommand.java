@@ -7,6 +7,7 @@ package frc.robot.commands.teleop.climber.inners;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.teleop.climber.ClimberHoldingInnersCommand;
 import frc.robot.commands.teleop.climber.sleep.ClimberInnersTimedMovementCommand;
+import frc.robot.commands.teleop.climber.sleep.ClimberPIDCommand;
 import frc.robot.subsystems.climber.andar.InnerClimberSubsystem;
 import frc.robot.subsystems.climber.pg.PGClimberSubsystem;
 
@@ -24,5 +25,7 @@ public class ClimberInnerGroupStageCommand extends SequentialCommandGroup {
     addCommands(new ClimberHoldingInnersCommand(pgClimberSubsystem, pgClimberSubsystem.getInnerPGPosition(), true));
 
     addCommands(new ClimberInnersTimedMovementCommand(innerClimberSubsystem, 1.0));
+
+    addCommands(new ClimberPIDCommand(pgClimberSubsystem, pgClimberSubsystem.getInnerPGPosition()));
   }
 }
