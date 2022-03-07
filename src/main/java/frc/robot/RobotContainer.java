@@ -17,8 +17,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.OIConstants.OIJoyC;
 // import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
+import frc.robot.commands.teleop.climber.inner.InnerClimberCommand;
+import frc.robot.commands.teleop.climber.outer.OuterClimberCommand;
 import frc.robot.commands.teleop.drive.DriveCommand;
 import frc.robot.commands.teleop.feeder.FeederCommand;
 import frc.robot.commands.teleop.intake.IntakeCommand;
@@ -28,6 +31,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.climber.inner.InnerClimberSubsystem;
+import frc.robot.subsystems.climber.outer.OuterClimberSubsystem;
+import frc.robot.subsystems.climber.pg.PGClimberSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -41,7 +47,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
   // IO Devices
   public static AHRS navx;
-  public static Joystick joyD;
+  public static Joystick joyD, joyC;
   public static NetworkTable table;
   public static NetworkTableEntry tv, tx, ty, ta;
 
@@ -50,6 +56,9 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
   private final ShooterSubsystem shooterSubsystem;
+  private final InnerClimberSubsystem innerClimberSubsystem;
+  private final OuterClimberSubsystem outerClimberSubsystem;
+  private final PGClimberSubsystem pgClimberSubsystem;
   private final SlewRateLimiter speedLimit, turnLimit;
 
   /**
@@ -60,13 +69,16 @@ public class RobotContainer {
     this.intakeSubsystem = new IntakeSubsystem();
     this.feederSubsystem = new FeederSubsystem();
     this.shooterSubsystem = new ShooterSubsystem();
+    this.innerClimberSubsystem = new InnerClimberSubsystem();
+    this.outerClimberSubsystem = new OuterClimberSubsystem();
+    this.pgClimberSubsystem = new PGClimberSubsystem();
 
     this.speedLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
     this.turnLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
 
     RobotContainer.navx = new AHRS(SPI.Port.kMXP);
     RobotContainer.joyD = new Joystick(OIConstants.kDriverJoystickPort);
-    // RobotContainer.joyC = new Joystick(OIConstants.kClimberJoystickPort);
+    RobotContainer.joyC = new Joystick(OIConstants.kClimberJoystickPort);
     RobotContainer.table = NetworkTableInstance.getDefault().getTable(VisionConstants.limelight);
     RobotContainer.tv = RobotContainer.table.getEntry(VisionConstants.tv);
     RobotContainer.tx = RobotContainer.table.getEntry(VisionConstants.tx);
@@ -83,6 +95,16 @@ public class RobotContainer {
 
     // Intake
     this.intakeSubsystem.setDefaultCommand(new IntakeStoppingCommand(this.intakeSubsystem));
+
+    // Climber - PG
+
+    // Climber - Inner
+    this.innerClimberSubsystem.setDefaultCommand(
+        new InnerClimberCommand(this.innerClimberSubsystem, () -> RobotContainer.joyC.getRawAxis(OIJoyC.innerFive)));
+
+    // Climber - Outer
+    this.outerClimberSubsystem.setDefaultCommand(
+        new OuterClimberCommand(this.outerClimberSubsystem, () -> RobotContainer.joyC.getRawAxis(OIJoyC.outerOne)));
   }
 
   /**
@@ -136,7 +158,7 @@ public class RobotContainer {
     RobotContainer.tx = RobotContainer.table.getEntry(VisionConstants.tx);
     return tx.getDouble(VisionConstants.defaultValue);
   }
-  
+
   public double getAreaOfGoal() {
     RobotContainer.ta = RobotContainer.table.getEntry(VisionConstants.ta);
     return ta.getDouble(VisionConstants.defaultAreaValue);

@@ -61,6 +61,14 @@ public final class Constants {
         public static final int shooter_RB_ButtonNumber = 5;
         public static final int turn_LB_ButtonNumber = 6;
 
+        public final static class OIJoyC {
+
+            public static final int outerOne = 0;
+            public static final int innerFive = 0;
+
+
+        }
+
     }
 
     public final static class IntakeConstants {
@@ -126,10 +134,10 @@ public final class Constants {
             public static final int innerPGConstants = 4;
             public static final int outerPGConstants = 6;
             public static final double speedMultiplier = 0.5;
-            public static final double kPInner = 0;
+            public static final double kPInner = 0.07;
             public static final double kIInner = 0;
             public static final double kDInner = 0;
-            public static final double kPOuter = 0;
+            public static final double kPOuter = 0.07;
             public static final double kIOuter = 0;
             public static final double kDOuter = 0;
 
