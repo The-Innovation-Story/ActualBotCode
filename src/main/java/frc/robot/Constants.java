@@ -118,7 +118,38 @@ public final class Constants {
 
         public static final int falcon_ID = 6;
         public static final double falconSpeed = 0.5;
-        public static final double deadband = 0;
+        public static final double deadband = 0.05;
+        public static final double speedMultiplier = 0.5;
+
+        public final static class PGConstants {
+
+            public static final int innerPGConstants = 4;
+            public static final int outerPGConstants = 6;
+            public static final double speedMultiplier = 0.5;
+            public static final double kPInner = 0;
+            public static final double kIInner = 0;
+            public static final double kDInner = 0;
+            public static final double kPOuter = 0;
+            public static final double kIOuter = 0;
+            public static final double kDOuter = 0;
+
+        }
+
+        public final static class InnerClimberConstants {
+
+            public static final int in_LC_ID = 31;
+            public static final int in_RC_ID = 32;
+            public static final double speedMultiplier = 0.5;
+
+        }
+
+        public final static class OuterClimberConstants {
+
+            public static final int out_LC_ID = 5;
+            public static final int out_RC_ID = 7;
+            public static final double speedMultiplier = 0.5;
+
+        }
 
     }
 }
