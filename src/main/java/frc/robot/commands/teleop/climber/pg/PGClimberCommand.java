@@ -12,14 +12,17 @@ import frc.robot.subsystems.climber.pg.PGClimberSubsystem;
 public class PGClimberCommand extends CommandBase {
   private PGClimberSubsystem pgClimberSubsystem;
   private Supplier<Double> pg;
+  private Supplier<Boolean> side;
 
   /** Creates a new PGClimberCommand. */
-  public PGClimberCommand(PGClimberSubsystem pgClimberSubsystem, Supplier<Double> pg) {
+  public PGClimberCommand(PGClimberSubsystem pgClimberSubsystem, Supplier<Double> pg, Supplier<Boolean> side) {
     this.pgClimberSubsystem = pgClimberSubsystem;
     this.pg = pg;
+    this.side = side;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.pgClimberSubsystem);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -31,7 +34,10 @@ public class PGClimberCommand extends CommandBase {
   public void execute() {
     double pg = this.pg.get();
 
-    this.pgClimberSubsystem.setPGInnerSpeed(pg);
+    if (this.side.get())
+      this.pgClimberSubsystem.setPGInnerSpeed(pg);
+    else
+      this.pgClimberSubsystem.setPGOuterSpeed(pg);
   }
 
   // Called once the command ends or is interrupted.

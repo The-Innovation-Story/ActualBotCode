@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
@@ -32,6 +34,8 @@ public class InnerClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("BaharWala L", this.baharWala_L.get());
+    SmartDashboard.putNumber("BaharWala R", this.baharWala_R.get());
     // This method will be called once per scheduler run
   }
 
@@ -47,5 +51,18 @@ public class InnerClimberSubsystem extends SubsystemBase {
 
   public void setInnerSpeed(double outers) {
     this.outerWare.set(outers * ClimberConstants.speedMultiplier);
+  }
+
+  public void setRunToTimer(double time) {
+    double TOTAL_TIMER = time;
+    double OUTERWARE_SPEED = 0.6;
+    double now = Timer.getFPGATimestamp();
+    while (now < TOTAL_TIMER) {
+      if (now == TOTAL_TIMER / 3)
+        this.outerWare.set(OUTERWARE_SPEED / 2);
+      if (now == TOTAL_TIMER / 2)
+        this.outerWare.set(OUTERWARE_SPEED);
+    }
+    this.outerWare.set(0.0);
   }
 }

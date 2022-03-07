@@ -20,7 +20,10 @@ public class ClimberOuterJoyCommand extends CommandBase {
     addRequirements(this.outerClimberSubsystem);
   }
 
-  // Called when the command is initially scheduled.
+  public ClimberOuterJoyCommand(OuterClimberSubsystem outerClimberSubsystem2, Supplier<Double> supplier, Object object) {
+}
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 

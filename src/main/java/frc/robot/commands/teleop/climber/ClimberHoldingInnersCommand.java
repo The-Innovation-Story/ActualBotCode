@@ -50,7 +50,7 @@ public class ClimberHoldingInnersCommand extends CommandBase {
             this.basePoint
                 + (this.moveUp ? -1 : 1) * (this.moveUp ? ClimberConstants.InnerHoldings.innerUpperPGPositionDifference
                     : ClimberConstants.InnerHoldings.innerDownerPGPositionDifference)),
-        -0.5, 0.5);
+        -0.9, 0.9);
 
     SmartDashboard.putNumber("Current Position", this.pgClimberSubsystem.getInnerPGPosition());
 

@@ -17,8 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
+// import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
+import frc.robot.commands.auto.timepass.AutonomousTimeConsumptionCommand;
 import frc.robot.commands.teleop.climber.ClimberHoldingInnersCommand;
 import frc.robot.commands.teleop.climber.inners.ClimberInnerGroupStageCommand;
 // import frc.robot.commands.teleop.climber.ClimberGroupCommand;
@@ -106,8 +107,9 @@ public class RobotContainer {
     // IntakeStoppingCommand(this.intakeSubsystem));
 
     // PG Climber
-    this.pgClimberSubsystem.setDefaultCommand(new PGClimberCommand(this.pgClimberSubsystem,
-        () -> RobotContainer.joyC.getRawAxis(OIConstants.JoyC.pgOneAxis)));
+    this.pgClimberSubsystem.setDefaultCommand(
+        new PGClimberCommand(this.pgClimberSubsystem, () -> RobotContainer.joyC.getRawAxis(OIConstants.JoyC.pgOneAxis),
+            () -> RobotContainer.joyC.getRawButton(OIConstants.JoyC.pgOuterRunButton)));
 
     // Inner Climber
     this.innerClimberSubsystem.setDefaultCommand(new ClimberInnerJoyCommand(this.innerClimberSubsystem,
@@ -160,7 +162,7 @@ public class RobotContainer {
 
     // Climber Move Motors
     new JoystickButton(RobotContainer.joyC, 1).debounce(OIConstants.feederDebouncePeriod)
-        .whenActive(new ClimberInnersTimedMovementCommand(this.innerClimberSubsystem, 1.0));
+        .whenActive(new ClimberInnersTimedMovementCommand(this.innerClimberSubsystem, 3.0));
 
     new JoystickButton(RobotContainer.joyC, 4)
         .debounce(OIConstants.feederDebouncePeriod).whenActive(
@@ -179,7 +181,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousDriveRoutineGroupCommand(this.driveSubsystem);
+    return new AutonomousTimeConsumptionCommand(this.driveSubsystem, 10);
     // return new AutonomousTurnByAngleCommand(this.driveSubsystem, 100);
   }
 

@@ -69,6 +69,7 @@ public final class Constants {
             public static final int innerTwoAxis = 2;
             public static final int innerFiveAxis = 5;
             public static final int outerFourAxis = 4;
+            public static final int pgOuterRunButton = 3;
 
         }
 
@@ -139,8 +140,8 @@ public final class Constants {
             public static final double kD = 0;
             public static final double topHolding = 201;
             public static final double bottomHolding = 400;
-            public static final double innerUpperPGPositionDifference = 50;
-            public static final double innerDownerPGPositionDifference = 50;
+            public static final double innerUpperPGPositionDifference = 120;
+            public static final double innerDownerPGPositionDifference = 120;
 
         }
 
