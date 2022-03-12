@@ -17,11 +17,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.Constants.OIConstants.OIJoyC;
+// import frc.robot.Constants.OIConstants.OIJoyC;
 // import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
+import frc.robot.commands.auto.shooter.ShooterByTimeCommand;
 import frc.robot.commands.teleop.climber.inner.InnerClimberCommand;
 import frc.robot.commands.teleop.climber.outer.OuterClimberCommand;
+import frc.robot.commands.teleop.climber.pg.inner.InnerPGClimberCommand;
+import frc.robot.commands.teleop.climber.pg.inner.InnerPGClimberStopCommand;
+import frc.robot.commands.teleop.climber.pg.outer.OuterPGClimberCommand;
+import frc.robot.commands.teleop.climber.pg.outer.OuterPGClimberStopCommand;
 import frc.robot.commands.teleop.drive.DriveCommand;
 import frc.robot.commands.teleop.feeder.FeederCommand;
 import frc.robot.commands.teleop.intake.IntakeCommand;
@@ -33,7 +38,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.climber.inner.InnerClimberSubsystem;
 import frc.robot.subsystems.climber.outer.OuterClimberSubsystem;
-import frc.robot.subsystems.climber.pg.PGClimberSubsystem;
+import frc.robot.subsystems.climber.pg.InnerPGSubsystem;
+import frc.robot.subsystems.climber.pg.OuterPGSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,7 +64,8 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem;
   private final InnerClimberSubsystem innerClimberSubsystem;
   private final OuterClimberSubsystem outerClimberSubsystem;
-  private final PGClimberSubsystem pgClimberSubsystem;
+  private final InnerPGSubsystem innerPGSubsystem;
+  private final OuterPGSubsystem outerPGSubsystem;
   private final SlewRateLimiter speedLimit, turnLimit;
 
   /**
@@ -71,7 +78,8 @@ public class RobotContainer {
     this.shooterSubsystem = new ShooterSubsystem();
     this.innerClimberSubsystem = new InnerClimberSubsystem();
     this.outerClimberSubsystem = new OuterClimberSubsystem();
-    this.pgClimberSubsystem = new PGClimberSubsystem();
+    this.innerPGSubsystem = new InnerPGSubsystem();
+    this.outerPGSubsystem = new OuterPGSubsystem();
 
     this.speedLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
     this.turnLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
@@ -96,15 +104,30 @@ public class RobotContainer {
     // Intake
     this.intakeSubsystem.setDefaultCommand(new IntakeStoppingCommand(this.intakeSubsystem));
 
-    // Climber - PG
+    // Shooter
+    // this.shooterSubsystem.setDefaultCommand(new
+    // ShooterJoyTestCommand(this.shooterSubsystem, () ->
+    // RobotContainer.joyD.getRawAxis(4)));
+
+    // PG - Inner
+    this.innerPGSubsystem.setDefaultCommand(new InnerPGClimberCommand(this.innerPGSubsystem,
+        () -> RobotContainer.joyC.getRawAxis(OIConstants.OIJoyC.innerPG_Axis_Two),
+        () -> RobotContainer.joyC.getRawButton(OIConstants.OIJoyC.innerPG_Button_Five)));
+
+    // PG - Outer
+    this.outerPGSubsystem.setDefaultCommand(new OuterPGClimberCommand(this.outerPGSubsystem,
+        () -> RobotContainer.joyC.getRawAxis(OIConstants.OIJoyC.outerPG_Axis_Three),
+        () -> RobotContainer.joyC.getRawButton(OIConstants.OIJoyC.outerPG_Button_Six)));
 
     // Climber - Inner
     this.innerClimberSubsystem.setDefaultCommand(
-        new InnerClimberCommand(this.innerClimberSubsystem, () -> RobotContainer.joyC.getRawAxis(OIJoyC.innerFive)));
+        new InnerClimberCommand(this.innerClimberSubsystem,
+            () -> RobotContainer.joyC.getRawAxis(OIConstants.OIJoyC.innerClimber_Axis_One)));
 
     // Climber - Outer
     this.outerClimberSubsystem.setDefaultCommand(
-        new OuterClimberCommand(this.outerClimberSubsystem, () -> RobotContainer.joyC.getRawAxis(OIJoyC.outerOne)));
+        new OuterClimberCommand(this.outerClimberSubsystem,
+            () -> RobotContainer.joyC.getRawAxis(OIConstants.OIJoyC.outerClimber_Axis_Five)));
   }
 
   /**
@@ -118,19 +141,29 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Feeder Button Integration
     new JoystickButton(RobotContainer.joyD, OIConstants.feeder_X_ButtonNumber)
-        .debounce(OIConstants.feederDebouncePeriod).whenActive(new FeederCommand(this.feederSubsystem));
+        .whenActive(new FeederCommand(this.feederSubsystem));
 
     // Intake Forward Button Integration
     new JoystickButton(RobotContainer.joyD, OIConstants.intakeForward_Y_ButtonNumber)
-        .debounce(OIConstants.feederDebouncePeriod).toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
+        .toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
+
+    // Shooter Button Binding Integration [by Time] => Works
+    new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
+        .whenActive(new ShooterByTimeCommand(shooterSubsystem, 10));
 
     // Shooter Button Binding Integration
-    new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
-        .debounce(OIConstants.feederDebouncePeriod).whenActive(new ShooterCommand(this.shooterSubsystem));
-
-    // Turn An Angle
     new JoystickButton(RobotContainer.joyD, OIConstants.turn_LB_ButtonNumber)
-        .debounce(OIConstants.feederDebouncePeriod).whenActive(new ShooterCommand(this.shooterSubsystem));
+        .whenActive(new ShooterCommand(this.shooterSubsystem));
+
+    // PG Stopper Button Binding Integration - Inner
+    new JoystickButton(RobotContainer.joyC, OIConstants.OIJoyC.innerPGStop_Button_Two)
+        .whenPressed(new InnerPGClimberStopCommand(this.innerPGSubsystem, this.innerPGSubsystem.getInnerPGPosition(),
+            () -> dpadButtonRight()));
+
+    // PG Stopper Button Binding Integration - Outer
+    new JoystickButton(RobotContainer.joyC, OIConstants.OIJoyC.outerPGStop_Button_Three)
+        .whenPressed(new OuterPGClimberStopCommand(this.outerPGSubsystem, this.outerPGSubsystem.getOuterPGPosition(),
+            () -> dpadButtonLeft()));
   }
 
   /**
@@ -149,7 +182,7 @@ public class RobotContainer {
     return tv.getBoolean(false);
   }
 
-  public double getDistanceToGoal() {
+  public static double getDistanceToGoal() {
     RobotContainer.ty = RobotContainer.table.getEntry(VisionConstants.ty);
     return ty.getDouble(VisionConstants.defaultValue);
   }
@@ -162,5 +195,22 @@ public class RobotContainer {
   public double getAreaOfGoal() {
     RobotContainer.ta = RobotContainer.table.getEntry(VisionConstants.ta);
     return ta.getDouble(VisionConstants.defaultAreaValue);
+  }
+
+  public boolean dpadButtonRight() {
+    return (RobotContainer.joyC.getPOV() >= 45 && RobotContainer.joyC.getPOV() <= 135);
+  }
+
+  public boolean dpadButtonLeft() {
+    return (RobotContainer.joyC.getPOV() >= 225 && RobotContainer.joyC.getPOV() <= 315);
+  }
+
+  public boolean dpadButtonUp() {
+    return (RobotContainer.joyC.getPOV() >= 315 && RobotContainer.joyC.getPOV() < 360)
+        || (RobotContainer.joyC.getPOV() >= 0 && RobotContainer.joyC.getPOV() <= 45);
+  }
+
+  public boolean dpadButtonDown() {
+    return (RobotContainer.joyC.getPOV() >= 135 && RobotContainer.joyC.getPOV() <= 225);
   }
 }

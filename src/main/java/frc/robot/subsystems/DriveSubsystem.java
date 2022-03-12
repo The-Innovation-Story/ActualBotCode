@@ -53,7 +53,10 @@ public class DriveSubsystem extends SubsystemBase {
     this.leftSide.setInverted(false);
 
     this.driveTrain = new DifferentialDrive(this.leftSide, this.rightSide);
-    this.driveTrain.setSafetyEnabled(false);
+    this.driveTrain.setSafetyEnabled(true);
+    this.driveTrain.setDeadband(0.1);
+    this.driveTrain.setExpiration(0.1);
+    this.driveTrain.setMaxOutput(1);
 
     this.FR_encoder.setPosition(0.0);
     this.BR_encoder.setPosition(0.0);
@@ -73,6 +76,13 @@ public class DriveSubsystem extends SubsystemBase {
     this.BR.set(r);
     this.FL.set(l);
     this.BL.set(l);
+  }
+
+  public void curvatureDriveInbuilt(final double y, final double z) {
+    // System.out.println("Speed: " + y + " " + z);
+    this.rightSide.setInverted(false);
+
+    this.driveTrain.curvatureDrive(y, z, false);
   }
 
   public void arcadeInbuilt(final double y, final double z) {

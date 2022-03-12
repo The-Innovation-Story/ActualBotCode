@@ -38,6 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("RPM", ShooterSubsystem.shootEncoder.getVelocity());
     // This method will be called once per scheduler run
   }
 
@@ -48,6 +49,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void stopShooter() {
     this.shooter.set(0);
+  }
+
+  public void setSpeed(double shoot) {
+    if (shoot > ShooterConstants.deadband) this.shooter.set(0.0);
+    else this.shooter.set(shoot);
   }
 
   public void setSpeed() {

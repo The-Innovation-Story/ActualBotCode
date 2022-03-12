@@ -7,7 +7,9 @@ package frc.robot.commands.teleop.drive;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -35,7 +37,11 @@ public class DriveCommand extends CommandBase {
     double speed = this.speedLimit.calculate(this.speed.get());
     double turn = this.turnLimit.calculate(this.turn.get());
 
-    this.driveSubsystem.drive(speed, turn);
+    SmartDashboard.putNumber("Limelight X", RobotContainer.getDistanceGyroSeparationFromGoal());
+    SmartDashboard.putNumber("Limelight Y", RobotContainer.getDistanceToGoal());
+
+
+    this.driveSubsystem.arcadeInbuilt(speed, turn);
   }
 
   // Called once the command ends or is interrupted.

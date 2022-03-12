@@ -2,25 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.teleop.climber.pg;
+package frc.robot.commands.teleop.climber.pg.inner;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.climber.pg.PGClimberSubsystem;
+import frc.robot.subsystems.climber.pg.InnerPGSubsystem;
 
 public class InnerPGClimberCommand extends CommandBase {
-  private PGClimberSubsystem pgClimberSubsystem;
+  private InnerPGSubsystem innerPGSubsystem;
   private Supplier<Double> pg;
   private Supplier<Boolean> side;
 
   /** Creates a new InnerPGClimberCommand. */
-  public InnerPGClimberCommand(PGClimberSubsystem pgClimberSubsystem, Supplier<Double> pg, Supplier<Boolean> side) {
-    this.pgClimberSubsystem = pgClimberSubsystem;
+  public InnerPGClimberCommand(InnerPGSubsystem innerPGSubsystem, Supplier<Double> pg, Supplier<Boolean> side) {
+    this.innerPGSubsystem = innerPGSubsystem;
     this.pg = pg;
     this.side = side;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.pgClimberSubsystem);
+    addRequirements(this.innerPGSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -35,9 +35,9 @@ public class InnerPGClimberCommand extends CommandBase {
     boolean side = this.side.get();
 
     if (side)
-      this.pgClimberSubsystem.setPGInnerSpeed(pg);
+      this.innerPGSubsystem.setPGInnerSpeed(-1 * pg);
     else
-      this.pgClimberSubsystem.setPGInnerSpeed(-1 * pg);
+      this.innerPGSubsystem.setPGInnerSpeed(pg);
   }
 
   // Called once the command ends or is interrupted.
