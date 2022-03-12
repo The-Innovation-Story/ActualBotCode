@@ -5,8 +5,7 @@
 package frc.robot.commands.auto.vision;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.VisionConstants;
@@ -14,17 +13,15 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class LimelightAlignCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
-  private final ProfiledPIDController turnController;
+  private final PIDController turnController;
 
   /** Creates a new LimelightAlignCommand. */
   public LimelightAlignCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
-    this.turnController = new ProfiledPIDController(VisionConstants.kP, VisionConstants.kI, VisionConstants.kD,
-        new TrapezoidProfile.Constraints(VisionConstants.kMaxVelocityTurning,
-            VisionConstants.kMaxAccelerationTurning));
+    this.turnController = new PIDController(VisionConstants.kP, VisionConstants.kI, VisionConstants.kD);
 
-    this.turnController.setTolerance(0.2);
-    this.turnController.setGoal(0.0);
+    this.turnController.setTolerance(0.5);
+    this.turnController.setSetpoint(0.0);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.driveSubsystem);
   }
@@ -45,11 +42,13 @@ public class LimelightAlignCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.turnController.close();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(RobotContainer.getDistanceGyroSeparationFromGoal()) < 0.5);
   }
 }

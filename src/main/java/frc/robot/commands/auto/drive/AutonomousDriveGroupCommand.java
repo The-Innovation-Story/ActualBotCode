@@ -6,7 +6,7 @@ package frc.robot.commands.auto.drive;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.auto.feeder.AutonomousFeederCommand;
+import frc.robot.commands.auto.feeder.FeederByTimeCommand;
 import frc.robot.commands.auto.intake.AutonomousIntakeCommand;
 import frc.robot.commands.auto.timepass.AutonomousTimeConsumptionCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -35,7 +35,7 @@ public class AutonomousDriveGroupCommand extends SequentialCommandGroup {
         new AutonomousDriveTurnCommand(driveSubsystem, INITIAL_DISTANCE, 0),
         new AutonomousTurnByAngleCommand(driveSubsystem, 179)));
 
-    addCommands(new AutonomousFeederCommand(feederSubsystem, FEEDER_TIME_ON));
+    addCommands(new FeederByTimeCommand(feederSubsystem, FEEDER_TIME_ON));
 
     addCommands(new ParallelCommandGroup(
         new AutonomousTurnByAngleCommand(driveSubsystem, DUPLET_ANGLE),
@@ -47,6 +47,6 @@ public class AutonomousDriveGroupCommand extends SequentialCommandGroup {
         new AutonomousTurnByAngleCommand(driveSubsystem, TRIPLET_ANGLE),
         new AutonomousDriveTurnCommand(driveSubsystem, TRIPLET_DISTANCE, 0)));
 
-    addCommands(new AutonomousFeederCommand(feederSubsystem, FEEDER_TIME_ON));
+    addCommands(new FeederByTimeCommand(feederSubsystem, FEEDER_TIME_ON));
   }
 }

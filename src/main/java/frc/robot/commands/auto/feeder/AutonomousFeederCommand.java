@@ -4,18 +4,15 @@
 
 package frc.robot.commands.auto.feeder;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeederSubsystem;
 
 public class AutonomousFeederCommand extends CommandBase {
   private FeederSubsystem feederSubsystem;
-  private double now, total;
 
   /** Creates a new AutonomousFeederCommand. */
-  public AutonomousFeederCommand(FeederSubsystem feederSubsystem, double time) {
+  public AutonomousFeederCommand(FeederSubsystem feederSubsystem) {
     this.feederSubsystem = feederSubsystem;
-    this.total = time;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.feederSubsystem);
   }
@@ -24,7 +21,6 @@ public class AutonomousFeederCommand extends CommandBase {
   @Override
   public void initialize() {
     this.feederSubsystem.setFeederSpeed();
-    this.now = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +37,6 @@ public class AutonomousFeederCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (this.now > this.total);
+    return false;
   }
 }
