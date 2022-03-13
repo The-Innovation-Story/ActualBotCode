@@ -10,7 +10,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
 import frc.robot.Constants.OIConstants;
@@ -19,6 +20,7 @@ import frc.robot.Constants.VisionConstants;
 // import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
 import frc.robot.commands.auto.drive.tester.DriveToACoordinateCommand;
+import frc.robot.commands.auto.intake.IntakeByTimeCommand;
 // import frc.robot.commands.auto.shooter.ShooterByTimeCommand;
 // import frc.robot.commands.teleop.climber.inner.InnerClimberCommand;
 // import frc.robot.commands.teleop.climber.outer.OuterClimberCommand;
@@ -28,12 +30,12 @@ import frc.robot.commands.auto.drive.tester.DriveToACoordinateCommand;
 // import frc.robot.commands.teleop.climber.pg.outer.OuterPGClimberStopCommand;
 import frc.robot.commands.teleop.drive.DriveCommand;
 // import frc.robot.commands.teleop.feeder.FeederCommand;
-// import frc.robot.commands.teleop.intake.IntakeCommand;
-// import frc.robot.commands.teleop.intake.IntakeStoppingCommand;
+import frc.robot.commands.teleop.intake.IntakeCommand;
+import frc.robot.commands.teleop.intake.IntakeStoppingCommand;
 // import frc.robot.commands.teleop.shooter.ShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 // import frc.robot.subsystems.FeederSubsystem;
-// import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 // import frc.robot.subsystems.ShooterSubsystem;
 // import frc.robot.subsystems.climber.inner.InnerClimberSubsystem;
 // import frc.robot.subsystems.climber.outer.OuterClimberSubsystem;
@@ -59,7 +61,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem;
-  // private final IntakeSubsystem intakeSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
   // private final FeederSubsystem feederSubsystem;
   // private final ShooterSubsystem shooterSubsystem;
   // private final InnerClimberSubsystem innerClimberSubsystem;
@@ -74,7 +76,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     this.driveSubsystem = new DriveSubsystem();
-    // this.intakeSubsystem = new IntakeSubsystem();
+    this.intakeSubsystem = new IntakeSubsystem();
     // this.feederSubsystem = new FeederSubsystem();
     // this.shooterSubsystem = new ShooterSubsystem();
     // this.innerClimberSubsystem = new InnerClimberSubsystem();
@@ -102,8 +104,7 @@ public class RobotContainer {
             () -> RobotContainer.joyD.getRawAxis(OIConstants.kJoyDTurnAxis), this.speedLimit, this.turnLimit));
 
     // Intake
-    // this.intakeSubsystem.setDefaultCommand(new
-    // IntakeStoppingCommand(this.intakeSubsystem));
+    this.intakeSubsystem.setDefaultCommand(new IntakeStoppingCommand(this.intakeSubsystem));
 
     // Shooter
     // this.shooterSubsystem.setDefaultCommand(new
@@ -157,9 +158,9 @@ public class RobotContainer {
     // .whenActive(new FeederCommand(this.feederSubsystem));
 
     // Intake Forward Button Integration
-    // new JoystickButton(RobotContainer.joyD,
-    // OIConstants.intakeForward_Y_ButtonNumber)
-    // .toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
+    new JoystickButton(RobotContainer.joyD,
+        OIConstants.intakeForward_Y_ButtonNumber)
+        .toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
 
     // Shooter Button Binding Integration [by Time] => Works
     // new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
@@ -184,10 +185,11 @@ public class RobotContainer {
 
     // () -> dpadButtonLeft()));
     new JoystickButton(RobotContainer.joyD, 7)
-        .whenPressed(new SequentialCommandGroup(new DriveToACoordinateCommand(this.driveSubsystem, 1, 0),
-            new DriveToACoordinateCommand(this.driveSubsystem, 1, 1)));
-    new JoystickButton(RobotContainer.joyD, 8).whenPressed(new
-    DriveToACoordinateCommand(this.driveSubsystem, 1, 0));
+        .whenPressed(
+          
+        new DriveToACoordinateCommand(this.driveSubsystem, 1, 0));
+    // new JoystickButton(RobotContainer.joyD, 8).whenPressed(new
+    // DriveToACoordinateCommand(this.driveSubsystem, 1, 0));
   }
 
   /**

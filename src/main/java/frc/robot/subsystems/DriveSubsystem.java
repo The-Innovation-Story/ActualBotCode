@@ -201,20 +201,20 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // Equal Weightage for Both PIDs
-    if (Math.abs(this.trans_Lmot) > 0.1 || Math.abs(this.trans_Rmot) > 0.1) {
+    if (Math.abs(this.trans_Lmot) > DrivingConstants.sexyMaxSpeed || Math.abs(this.trans_Rmot) > DrivingConstants.sexyMaxSpeed) {
       if (Math.abs(this.trans_Lmot) > Math.abs(this.trans_Rmot)) {
-        this.trans_Rmot = 0.1 * this.trans_Rmot / Math.abs(this.trans_Lmot);
-        this.trans_Lmot = 0.1 * this.trans_Lmot / Math.abs(this.trans_Lmot);
+        this.trans_Rmot = DrivingConstants.sexyMaxSpeed * this.trans_Rmot / Math.abs(this.trans_Lmot);
+        this.trans_Lmot = DrivingConstants.sexyMaxSpeed * this.trans_Lmot / Math.abs(this.trans_Lmot);
         // MathUtil.F(trans_Lmot, -0.2, 0.2);
       } else {
-        this.trans_Lmot = 0.1 * this.trans_Lmot / Math.abs(this.trans_Rmot);
-        this.trans_Rmot = 0.1 * this.trans_Rmot / Math.abs(this.trans_Rmot);
+        this.trans_Lmot = DrivingConstants.sexyMaxSpeed * this.trans_Lmot / Math.abs(this.trans_Rmot);
+        this.trans_Rmot = DrivingConstants.sexyMaxSpeed * this.trans_Rmot / Math.abs(this.trans_Rmot);
         // MathUtil.clamp(trans_Rmot, -0.2, 0.2);
       }
 
     }
     double speed[] = { this.trans_Lmot, this.trans_Rmot };
-    // double speed[] = { 0.1, 0.1 };
+    // double speed[] = { DrivingConstants.sexyMaxSpeed, DrivingConstants.sexyMaxSpeed };
 
     return speed;
     // Ang_Lmot=

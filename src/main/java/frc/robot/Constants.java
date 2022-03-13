@@ -20,6 +20,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
     public final static class DrivingConstants {
+        public static final double sexyMaxSpeed = 0.3; 
 
         public static final int neoCountsPerRevolution = 42;
         public static final int FL_ID = 21; // 11
@@ -67,7 +68,7 @@ public final class Constants {
             public static final int outerPG_Axis_Three = 3;
             public static final int innerPG_Button_Five = 5;
             public static final int outerPG_Button_Six = 6;
-            
+
             public static final int innerClimber_Axis_One = 1;
             public static final int outerClimber_Axis_Five = 5;
 
@@ -83,7 +84,7 @@ public final class Constants {
         public static final int intake_ID = 24;
         public static final double deadband = 0.05;
         public static final double stopSpeed = 0;
-        public static final double flowSpeed = 0.5;
+        public static final double flowSpeed = -0.55;
     }
 
     public final static class VisionConstants {
