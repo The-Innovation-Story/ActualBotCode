@@ -45,6 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private PIDController controller;
   private PIDController controllerang;
+  private PIDController controllerangle;
   public Pose2d pose;
   public double a_botXpose, b_botYpose;
   public double[] x, y;
@@ -79,12 +80,13 @@ public class DriveSubsystem extends SubsystemBase {
     this.driveTrain.setDeadband(0.1);
     this.driveTrain.setExpiration(0.1);
     this.driveTrain.setMaxOutput(1);
-    // DriveSubsystem.navx.zeroYaw();
+    DriveSubsystem.navx.zeroYaw();
     this.m_odometry = new DifferentialDriveOdometry(
         Rotation2d.fromDegrees(-DriveSubsystem.navx.getAngle()));
 
     this.controller = new PIDController(0.6, 0, 0.00000);
     this.controllerang = new PIDController(0.016, 0, 0.009);
+    this.controllerangle = new PIDController(0.005, 0, 0.00);
 
     this.x = new double[] { 2 };
     this.y = new double[] { 0 };
@@ -201,7 +203,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // Equal Weightage for Both PIDs
-    if (Math.abs(this.trans_Lmot) > DrivingConstants.sexyMaxSpeed || Math.abs(this.trans_Rmot) > DrivingConstants.sexyMaxSpeed) {
+    if (Math.abs(this.trans_Lmot) > DrivingConstants.sexyMaxSpeed
+        || Math.abs(this.trans_Rmot) > DrivingConstants.sexyMaxSpeed) {
       if (Math.abs(this.trans_Lmot) > Math.abs(this.trans_Rmot)) {
         this.trans_Rmot = DrivingConstants.sexyMaxSpeed * this.trans_Rmot / Math.abs(this.trans_Lmot);
         this.trans_Lmot = DrivingConstants.sexyMaxSpeed * this.trans_Lmot / Math.abs(this.trans_Lmot);
@@ -214,11 +217,41 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
     double speed[] = { this.trans_Lmot, this.trans_Rmot };
-    // double speed[] = { DrivingConstants.sexyMaxSpeed, DrivingConstants.sexyMaxSpeed };
+    // double speed[] = { DrivingConstants.sexyMaxSpeed,
+    // DrivingConstants.sexyMaxSpeed };
 
     return speed;
     // Ang_Lmot=
     // Ang_Rmot=
+  }
+
+  public double[] speedcontrolforanglecorrect(double angletocorrect) {
+
+    this.angle = -DriveSubsystem.navx.getAngle() % 360;
+    SmartDashboard.putNumber("angle", angle);
+    SmartDashboard.putNumber("this.trans_Lmot", this.trans_Lmot);
+    this.trans_Lmot = -this.controllerangle.calculate(angle, angletocorrect);
+    this.trans_Rmot = this.controllerangle.calculate(angle, angletocorrect);
+
+    // Equal Weightage for Both PIDs
+    if (Math.abs(this.trans_Lmot) > DrivingConstants.sexyMaxSpeed
+        || Math.abs(this.trans_Rmot) > DrivingConstants.sexyMaxSpeed) {
+      if (Math.abs(this.trans_Lmot) > Math.abs(this.trans_Rmot)) {
+        this.trans_Rmot = DrivingConstants.sexyMaxSpeed * this.trans_Rmot / Math.abs(this.trans_Lmot);
+        this.trans_Lmot = DrivingConstants.sexyMaxSpeed * this.trans_Lmot / Math.abs(this.trans_Lmot);
+        // MathUtil.F(trans_Lmot, -0.2, 0.2);
+      } else {
+        this.trans_Lmot = DrivingConstants.sexyMaxSpeed * this.trans_Lmot / Math.abs(this.trans_Rmot);
+        this.trans_Rmot = DrivingConstants.sexyMaxSpeed * this.trans_Rmot / Math.abs(this.trans_Rmot);
+        // MathUtil.clamp(trans_Rmot, -0.2, 0.2);
+      }
+
+    }
+    double speed[] = { this.trans_Lmot, this.trans_Rmot };
+    // double speed[] = { DrivingConstants.sexyMaxSpeed,
+    // DrivingConstants.sexyMaxSpeed };
+
+    return speed;
   }
 
   public double getA_Xpose() {
@@ -228,6 +261,11 @@ public class DriveSubsystem extends SubsystemBase {
   public double getB_Ypose() {
     return b_botYpose;
   }
+  public double get_angle() {
+    return angle;
+  }
+
+  
 
   public void setSpeeds(double[] speeds) {
     this.leftSide.set(speeds[0]);

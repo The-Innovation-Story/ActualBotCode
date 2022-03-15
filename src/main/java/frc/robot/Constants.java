@@ -20,7 +20,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
     public final static class DrivingConstants {
-        public static final double sexyMaxSpeed = 0.3; 
+        public static final double sexyMaxSpeed = 0.1;
 
         public static final int neoCountsPerRevolution = 42;
         public static final int FL_ID = 21; // 11

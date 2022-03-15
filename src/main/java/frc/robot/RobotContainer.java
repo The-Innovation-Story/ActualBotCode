@@ -8,9 +8,12 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivingConstants;
@@ -19,6 +22,7 @@ import frc.robot.Constants.VisionConstants;
 // import frc.robot.Constants.OIConstants.OIJoyC;
 // import frc.robot.commands.auto.drive.AutonomousDriveRoutineGroupCommand;
 import frc.robot.commands.auto.drive.AutonomousTurnByAngleCommand;
+import frc.robot.commands.auto.drive.tester.DriveBySecondCoordinateCommand;
 import frc.robot.commands.auto.drive.tester.DriveToACoordinateCommand;
 import frc.robot.commands.auto.intake.IntakeByTimeCommand;
 // import frc.robot.commands.auto.shooter.ShooterByTimeCommand;
@@ -186,10 +190,15 @@ public class RobotContainer {
     // () -> dpadButtonLeft()));
     new JoystickButton(RobotContainer.joyD, 7)
         .whenPressed(
-          
-        new DriveToACoordinateCommand(this.driveSubsystem, 1, 0));
-    // new JoystickButton(RobotContainer.joyD, 8).whenPressed(new
-    // DriveToACoordinateCommand(this.driveSubsystem, 1, 0));
+            new SequentialCommandGroup(new DriveToACoordinateCommand(this.driveSubsystem, 1.5, 0),
+                new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
+                new DriveBySecondCoordinateCommand(this.driveSubsystem, 154),
+                new DriveToACoordinateCommand(this.driveSubsystem, 2, -0.94),
+                new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
+                new DriveBySecondCoordinateCommand(this.driveSubsystem, 154)));
+
+    new JoystickButton(RobotContainer.joyD, 8)
+        .whenPressed(new DriveBySecondCoordinateCommand(this.driveSubsystem, 154));
   }
 
   /**

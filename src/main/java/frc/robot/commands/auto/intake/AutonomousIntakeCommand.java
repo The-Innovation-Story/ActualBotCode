@@ -10,6 +10,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class AutonomousIntakeCommand extends CommandBase {
   private IntakeSubsystem intakeSubsystem;
+
   /** Creates a new AutonomousIntakeCommand. */
   public AutonomousIntakeCommand(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
@@ -25,7 +26,8 @@ public class AutonomousIntakeCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
